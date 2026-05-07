@@ -58,7 +58,10 @@ export const usePageStore = create<PageStore>((set, get) => ({
     })),
 
   addWidget: (pageId, widgetDef) => {
-    const widget: Widget = { ...widgetDef, id: globalThis.crypto.randomUUID() };
+    const uuid = globalThis.crypto?.randomUUID?.() ??
+      ([1e7,-1e3,-4e3,-8e3,-1e11] as number[]).join('').replace(/[018]/g, (c) =>
+        (parseInt(c) ^ (Math.random() * 16 >> parseInt(c) / 4)).toString(16));
+    const widget: Widget = { ...widgetDef, id: uuid };
     set((s) => {
       const page = s.pages[pageId];
       if (!page) return s;

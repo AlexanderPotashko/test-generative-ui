@@ -27,7 +27,7 @@ jobs:
             npm ci --omit=dev
 
             echo "→ Building..."
-            npm run build
+            NODE_OPTIONS='--max-old-space-size=512' npm run build
 
             echo "→ Restarting app..."
             pm2 reload generative-ui --update-env
