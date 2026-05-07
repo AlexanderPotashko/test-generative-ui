@@ -1,0 +1,35 @@
+name: Deploy to DigitalOcean
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USER }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          script: |
+            set -e
+            cd /app
+
+            echo "→ Pulling latest code..."
+            git pull origin master
+
+            echo "→ Installing dependencies..."
+            npm ci --omit=dev
+
+            echo "→ Building..."
+            npm run build
+
+            echo "→ Restarting app..."
+            pm2 reload generative-ui --update-env
+
+            echo "✓ Deploy complete"

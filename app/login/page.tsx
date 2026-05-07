@@ -76,10 +76,6 @@ export default function LoginPage() {
             Sign in
           </button>
         </form>
-
-        <p className="text-xs text-zinc-400 mt-6 text-center">
-          Demo: <strong>demo@example.com</strong> / <strong>demo1234</strong>
-        </p>
       </div>
     </div>
   );
